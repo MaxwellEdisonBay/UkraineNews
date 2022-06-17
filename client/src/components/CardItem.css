@@ -1,0 +1,14 @@
+.slider-control-bottomcenter button {
+    background: #FFF !important;
+    border-radius: 50%;
+    width: 15px !important;
+    height: 15px !important;
+}
+
+.slider-control-bottomcenter svg {
+    display: none !important;
+}
+
+.slider-control-bottomcenter li {
+    margin-right: 5px;
+}

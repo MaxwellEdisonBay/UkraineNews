@@ -93,7 +93,7 @@ router.post("/google", async (req, res) => {
       }
       // console.log(payload);
     } catch (error) {
-      console.log(e);
+      console.log(error);
       res.status(400).json("Invalid credentials");
     }
 
@@ -104,6 +104,7 @@ router.post("/google", async (req, res) => {
     // const payload = ticket.getPayload();
   } catch (err) {
     res.status(500).json(err);
+    console.log(err);
   }
 });
 

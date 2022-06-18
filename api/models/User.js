@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: false,
       unique: false,
+      default: "",
     },
     name: {
       type: String,
@@ -20,6 +21,7 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: false,
+      default: "",
     },
     profile_pic: {
       type: String,
@@ -29,6 +31,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: false,
       unique: false,
+      default: "",
     },
   },
   { timestamps: true }

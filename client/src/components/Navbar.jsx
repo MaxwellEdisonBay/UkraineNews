@@ -5,22 +5,25 @@ import { Menu, MenuItem } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 import useWindowSize from "../hooks/useWidowSize";
+import { useContext } from "react";
+import { Context } from "../context/Context";
 
-function Navbar({ user, handleSignOut }) {
+function Navbar() {
   const size = useWindowSize();
+  const { user, dispatch } = useContext(Context);
+
+  const handleSignOut = () => {
+    dispatch({ type: "LOGOUT" });
+  };
+
   const [click, setClick] = useState(false);
   const [isLargeScreen, setLargeScreen] = useState(size.width > 960);
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  useEffect(() => {
-    setLoggedIn(Object.keys(user).length !== 0);
-    console.log("isLoggedIn = " + isLoggedIn);
-  }, [user]);
+
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
 
   useEffect(() => {
     setLargeScreen(size.width > 960);
-    console.log("isButton = " + isLargeScreen);
   }, [size]);
 
   return (
@@ -28,15 +31,20 @@ function Navbar({ user, handleSignOut }) {
       <div className="navbar-container">
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
           VálkaUA
-          <img src="/ukraine.png" alt="Logo" className="ukraine" />
+          <img
+            src="/ukraine.png"
+            alt="Logo"
+            className="ukraine"
+            hidden={!isLargeScreen}
+          />
         </Link>
         <div className="mobile-menu">
           <div
             id="signInMobileDiv"
             className="sign-in-mobile-div"
-            hidden={isLargeScreen || isLoggedIn}
+            hidden={isLargeScreen || user}
           />
-          {isLoggedIn && !isLargeScreen && (
+          {user && !isLargeScreen && (
             <Menu
               menuButton={
                 <img
@@ -90,7 +98,7 @@ function Navbar({ user, handleSignOut }) {
             </Link>
           </li> */}
         </ul>
-        {isLoggedIn && isLargeScreen && (
+        {user && isLargeScreen && (
           <Menu
             menuButton={
               <img
@@ -108,7 +116,7 @@ function Navbar({ user, handleSignOut }) {
           </Menu>
         )}
 
-        <div id="signInDiv" hidden={!isLargeScreen || isLoggedIn} />
+        <div id="signInDiv" hidden={!isLargeScreen || user} />
       </div>
     </nav>
   );

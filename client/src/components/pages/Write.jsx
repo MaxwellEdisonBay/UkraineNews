@@ -1,32 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useContext } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Fab } from "react-tiny-fab";
+import { Context } from "../../context/Context";
 import "./Write.css";
 
-// const tx = document.getElementsByTagName("write-input write-text");
-// for (let i = 0; i < tx.length; i++) {
-//   tx[i].setAttribute(
-//     "style",
-//     "height:" + tx[i].scrollHeight + "px;overflow-y:hidden;"
-//   );
-//   tx[i].addEventListener("input", OnInput, false);
-//   console.log("blobbb");
-// }
-
-// function OnInput() {
-//   this.style.height = "auto";
-//   this.style.height = this.scrollHeight + "px";
-// }
-
-export default function Write({ user }) {
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  useEffect(() => {
-    setLoggedIn(Object.keys(user).length === 0);
-    console.log("LOGIN RAN " + isLoggedIn);
-  }, [user]);
+export default function Write() {
+  const { user } = useContext(Context);
   return (
     <div className="write">
-      <div id="writeModule" hidden={isLoggedIn}>
+      <div id="writeModule" hidden={!user}>
         <img src="/images/img-1.jpg" alt="" className="write-image" />
         <form className="write-form">
           <div className="write-form-group">
@@ -52,14 +35,6 @@ export default function Write({ user }) {
           <button className="write-submit">Publish</button>
         </form>
       </div>
-      {isLoggedIn ? (
-        <div className="error-block">
-          <i className="fa-solid fa-triangle-exclamation"></i>
-          <div className="error-text">
-            Přihlaste se prosím, abyste mohli přidávat nové příspěvky
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }

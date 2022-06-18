@@ -10,9 +10,6 @@ function Navbar({ user, handleSignOut }) {
   const size = useWindowSize();
   const [click, setClick] = useState(false);
   const [isLargeScreen, setLargeScreen] = useState(size.width > 960);
-  const [loginData, setLoginData] = useState(
-    localStorage.getItem("loginData") ? localStorage.getItem("loginData") : null
-  );
   const [isLoggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
     setLoggedIn(Object.keys(user).length !== 0);
@@ -26,80 +23,31 @@ function Navbar({ user, handleSignOut }) {
     console.log("isButton = " + isLargeScreen);
   }, [size]);
 
-  // useEffect(
-  //   (button, isLoggedIn) => {
-  //     const showButton = () => {
-  //       /* global google */
-  //       if (isLoggedIn) {
-  //         // google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-  //         //   type: "standard",
-  //         //   shape: "circle",
-  //         //   text: "continue_with",
-  //         // });
-  //         // google.accounts.id.renderButton(
-  //         //   document.getElementById("signInMobileDiv"),
-  //         //   {
-  //         //     type: "icon",
-  //         //     shape: "circle",
-  //         //   }s
-  //         // );
-  //       }
-  //       if (window.innerWidth < 960) {
-  //         console.log("Set false");
-  //         setButton(false);
-  //       } else if (window.innerWidth > 960) {
-  //         console.log("Set true");
-  //         setButton(true);
-  //       }
-  //       console.log("button = " + button);
-  //       console.log("window.innerWidth = " + window.innerWidth);
-  //     };
-  //     showButton();
-  // const renderGoogle = () => {
-  //   /* global google */
-  //   google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-  //     type: "standard",
-  //     shape: "circle",
-  //     text: "continue_with",
-  //   });
-  //   google.accounts.id.renderButton(
-  //     document.getElementById("signInMobileDiv"),
-  //     {
-  //       type: "icon",
-  //       shape: "circle",
-  //     }
-  //   );
-  // };
-  // window.addEventListener("resize", renderGoogle);
-  //   },
-  //   [button]
-  // );
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
           VálkaUA
-          {/* <i className="fab fa-typo3" /> */}
           <img src="/ukraine.png" alt="Logo" className="ukraine" />
         </Link>
         <div className="mobile-menu">
-          {/* {isLoggedIn ? ( */}
           <div
             id="signInMobileDiv"
             className="sign-in-mobile-div"
             hidden={isLargeScreen || isLoggedIn}
           />
-          {/* ) : null}  */}
           {isLoggedIn && !isLargeScreen && (
             <Menu
               menuButton={
-                <img src={user.picture} alt="Avatar" className="user-picture" />
+                <img
+                  src={user.profile_pic}
+                  alt="Avatar"
+                  className="user-picture"
+                />
               }
               className="mobile-signin-menu"
             >
-              <MenuItem disabled>
-                {user.given_name + " " + user.family_name}
-              </MenuItem>
+              <MenuItem disabled>{user.name}</MenuItem>
               <Link to="/settings" className="context-links">
                 <MenuItem>Nastavení</MenuItem>
               </Link>
@@ -132,7 +80,7 @@ function Navbar({ user, handleSignOut }) {
             </Link>
           </li>
 
-          <li>
+          {/* <li>
             <Link
               to="/login"
               className="nav-links-mobile"
@@ -140,17 +88,19 @@ function Navbar({ user, handleSignOut }) {
             >
               Sign Up
             </Link>
-          </li>
+          </li> */}
         </ul>
         {isLoggedIn && isLargeScreen && (
           <Menu
             menuButton={
-              <img src={user.picture} alt="Avatar" className="user-picture" />
+              <img
+                src={user.profile_pic}
+                alt="Avatar"
+                className="user-picture"
+              />
             }
           >
-            <MenuItem disabled>
-              {user.given_name + " " + user.family_name}
-            </MenuItem>
+            <MenuItem disabled>{user.name}</MenuItem>
             <Link to="/settings" className="context-links">
               <MenuItem>Nastavení</MenuItem>
             </Link>
@@ -159,9 +109,6 @@ function Navbar({ user, handleSignOut }) {
         )}
 
         <div id="signInDiv" hidden={!isLargeScreen || isLoggedIn} />
-        {/* {loginData
-          ? button && <Button buttonStyle="btn--outline">SIGN UP</Button>
-          : button && <Button buttonStyle="btn--outline">SIGN OUT</Button>} */}
       </div>
     </nav>
   );

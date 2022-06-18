@@ -4,8 +4,13 @@ const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
+      required: false,
+      unique: false,
+    },
+    name: {
+      type: String,
       required: true,
-      unique: true,
+      unique: false,
     },
     email: {
       type: String,
@@ -14,11 +19,16 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: false,
     },
     profile_pic: {
       type: String,
       default: "",
+    },
+    googleCred: {
+      type: String,
+      required: false,
+      unique: false,
     },
   },
   { timestamps: true }

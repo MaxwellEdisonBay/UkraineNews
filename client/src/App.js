@@ -13,19 +13,38 @@ import Write from "./components/pages/Write";
 import Settings from "./components/pages/Settings";
 import Single from "./components/pages/Single";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 function App() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(
+    localStorage.getItem("loginData") !== null
+      ? JSON.parse(localStorage.getItem("loginData"))
+      : {}
+  );
+  if (localStorage.getItem("loginData") !== null) {
+    console.log(JSON.parse(localStorage.getItem("loginData")));
+  }
 
   function handleCallbackResponse(response) {
-    console.log("Encoded JWT ID token: " + response.credential);
-    var userObject = jwt_decode(response.credential);
-    console.log(userObject);
-    setUser(userObject);
+    // var userObject = jwt_decode(response.credential);
+    // console.log(userObject);
+
+    axios
+      .post("/auth/google", response)
+      .then((res) => {
+        console.log("DATA RECEIVED");
+        console.log(res);
+        setUser(res.data);
+        localStorage.setItem("loginData", JSON.stringify(res.data));
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   function handleSignOut(event) {
     setUser({});
+    localStorage.removeItem("loginData");
   }
 
   useEffect(() => {

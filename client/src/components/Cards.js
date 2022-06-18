@@ -23,7 +23,7 @@ function Cards({ posts }) {
   ];
   return (
     <div className="cards">
-      <h1>Check out these EPIC Destinations!</h1>
+      <h1>Aktuální zprávy z Ukrajiny</h1>
       <div className="cards__container">
         <div className="cards__wrapper">
           {posts.map((p) => (

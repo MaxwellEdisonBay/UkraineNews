@@ -1,14 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ReactPlayer from "react-player";
 import JoLPlayer from "jol-player";
-import ImageSlider from "./ImageSlider";
 import Carousel from "nuka-carousel";
 import "./CardItem.css";
+import useWindowSize from "../hooks/useWidowSize";
+
 function CardItem({ post, slides }) {
+  const size = useWindowSize();
+  const coeff = size.width > 960 ? 0.025 : 0.045;
   const containerStyles = {
-    width: "500px",
-    height: "280px",
+    width: `${size.width * 16 * coeff}px`,
+    height: `${size.width * 9 * coeff}px`,
   };
 
   return (
@@ -30,8 +32,8 @@ function CardItem({ post, slides }) {
             <JoLPlayer
               option={{
                 videoSrc: "test.mp4",
-                width: 500,
-                height: 280,
+                width: size.width * 16 * coeff,
+                height: size.width * 9 * coeff,
                 language: "en",
                 isShowMultiple: false,
                 isShowScreenshot: false,
@@ -44,8 +46,8 @@ function CardItem({ post, slides }) {
             {slides.map((slide, slideIndex) => (
               <div
                 style={{
-                  width: "500px",
-                  height: "280px",
+                  width: `${size.width * 16 * coeff}px`,
+                  height: `${size.width * 9 * coeff}px`,
                   borderRadius: "10px",
                   backgroundPosition: "center",
                   backgroundSize: "cover",

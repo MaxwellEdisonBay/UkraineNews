@@ -25,9 +25,10 @@
 }
 
 .user-picture {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .navbar-logo {
@@ -172,13 +173,14 @@
   }
 
   .mobile-menu {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     vertical-align: middle;
+    align-items: center;
     position: absolute;
     top: 0;
     right: 0;
-    transform: translate(-100%, 60%);
+    transform: translate(-50%, 50%);
     font-size: 1.8rem;
     cursor: pointer;
   }

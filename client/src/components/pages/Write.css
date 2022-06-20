@@ -1,7 +1,7 @@
 .write {
   padding-top: 50px;
   min-height: 600;
-  padding-bottom: 2000px;
+  padding-bottom: 20px;
 }
 
 .write-image {
@@ -12,8 +12,24 @@
   object-fit: cover;
 }
 
+.write-uploads {
+  margin-left: 150px;
+  margin-top: 20px;
+  width: 80%;
+}
+
 .write-form {
   position: relative;
+}
+
+.compose-floating-button {
+  margin: 20px;
+  top: auto;
+  right: 20px;
+  bottom: 20px;
+  left: auto;
+  position: fixed;
+  z-index: 999;
 }
 
 .write-form-group {
@@ -91,6 +107,12 @@
     height: 250px;
     border-radius: 10px;
     object-fit: cover;
+  }
+
+  .write-uploads {
+    margin-left: 50px;
+    margin-top: 20px;
+    width: 80%;
   }
 
   .write-form-group {

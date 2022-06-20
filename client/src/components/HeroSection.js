@@ -22,7 +22,7 @@ function HeroSection({ scrollToPosts }) {
           className="btns"
           buttonStyle="btn--outline"
           buttonSize="btn--large"
-          onClick={scrollToPosts}
+          onClick={() => window.location.replace("/write")}
         >
           Přidat příspěvek <i className="far fa-play-circle" />
         </Button>

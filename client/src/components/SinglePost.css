@@ -16,7 +16,6 @@
 .single-post-title {
   text-align: center;
   margin: 20px;
-  font-family: "Roboto", sans-serif;
   font: weight 800px;
 }
 
@@ -29,9 +28,11 @@
 .single-post-icon:first-child {
   color: teal;
 }
+
 .single-post-icon:last-child {
   color: tomato;
 }
+
 .single-post-info {
   margin: 20px;
   margin-bottom: 20px;

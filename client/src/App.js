@@ -15,6 +15,8 @@ import Single from "./components/pages/Single";
 import axios from "axios";
 import { Context } from "./context/Context";
 
+export const API_URL = "http://localhost:5000/api";
+
 function App() {
   const { dispatch, user } = useContext(Context);
 
@@ -27,7 +29,7 @@ function App() {
     // console.log(userObject);
     dispatch({ type: "LOGIN_START" });
     axios
-      .post("/auth/google", response)
+      .post(`${API_URL}/auth/google`, response)
       .then((res) => {
         console.log("DATA RECEIVED");
         console.log(res);

@@ -3,7 +3,9 @@ const User = require("../models/User");
 const user = require("../models/User");
 const bcrypt = require("bcrypt");
 const { OAuth2Client } = require("google-auth-library");
+const { checkGroup } = require("./Utils");
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
+const Group = require("../models/Group");
 
 async function verify(token) {
   const ticket = await client.verifyIdToken({
@@ -60,32 +62,45 @@ router.post("/login", async (req, res) => {
 // GOOGLE AUTH
 router.post("/google", async (req, res) => {
   try {
+    const checkGroup = async (email) => {
+      const group = await Group.findOne({ email: email });
+      return group;
+    };
     // console.log(req.body);
     try {
       const payload = await verify(req.body.credential);
       console.log("CORRECT");
-
+      const userGroup = await checkGroup(payload.email);
+      // console.log(group.admin);
       const user = await User.findOne({ email: payload.email });
       if (!user) {
-        const newUser = new User({
+        const userData = {
           name: payload.name,
           email: payload.email,
           profile_pic: payload.picture,
           googleCred: req.body.credential,
-        });
+        };
+        if (userGroup) {
+          userData.group = userGroup.group;
+        }
+        const newUser = new User(userData);
         const savedUser = await newUser.save();
         res.status(200).json(newUser);
         console.log("Creating a new user");
       } else {
+        const userData = {
+          googleCred: req.body.credential,
+          name: payload.name,
+          email: payload.email,
+          profile_pic: payload.picture,
+        };
+        if (userGroup) {
+          userData.group = userGroup.group;
+        }
         const updateResult = await User.findOneAndUpdate(
           { _id: user._id },
           {
-            $set: {
-              googleCred: req.body.credential,
-              name: payload.name,
-              email: payload.email,
-              profile_pic: payload.picture,
-            },
+            $set: userData,
           }
         );
         res.status(200).json(updateResult);

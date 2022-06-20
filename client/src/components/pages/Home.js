@@ -10,6 +10,7 @@ import Single from "./Single";
 import Write from "./Write";
 
 import axios from "axios";
+import { API_URL } from "../../App";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -18,7 +19,7 @@ function Home() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await axios.get("/posts" + search);
+      const response = await axios.get(`${API_URL}/posts` + search);
       setPosts(response.data);
     };
     fetchPosts();

@@ -1,14 +1,30 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 //CREATE POST
 router.post("/", async (req, res) => {
-  const newPost = new Post(req.body);
+  const user = await User.findById(req.body.userID);
+  const isAdmin = user.group === "admin";
+  console.log(isAdmin);
+  const postData = { ...req.body };
+  if (isAdmin) {
+    postData.acceptedBy = req.body.userID;
+  }
+  const newPost = new Post(postData);
+  console.log(newPost);
   try {
-    const savedPost = await newPost.save();
-    res.status(200).json(savedPost);
+    await newPost.save((error, result) => {
+      if (!error) {
+        res.status(200).json(result);
+        console.log(result);
+      } else {
+        console.log(error);
+      }
+    });
   } catch (err) {
     res.status(500).json(err);
+    console.log(err);
   }
 });
 
@@ -72,7 +88,7 @@ router.get("/", async (req, res) => {
   try {
     let posts;
     if (username) {
-      posts = await Post.find({ username });
+      posts = await Post.find({ username }).sort({ _id: -1 });
     } else if (catName) {
       posts = await Post.find({
         categories: {
@@ -80,7 +96,7 @@ router.get("/", async (req, res) => {
         },
       });
     } else {
-      posts = await Post.find();
+      posts = await Post.find({ acceptedBy: { $ne: "" } }).sort({ _id: -1 });
     }
     res.status(200).json(posts);
   } catch (err) {

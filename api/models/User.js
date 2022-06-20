@@ -33,6 +33,12 @@ const UserSchema = new mongoose.Schema(
       unique: false,
       default: "",
     },
+    group: {
+      type: String,
+      required: false,
+      unique: false,
+      default: "user",
+    },
   },
   { timestamps: true }
 );

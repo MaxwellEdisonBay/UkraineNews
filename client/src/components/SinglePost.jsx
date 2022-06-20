@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { API_URL } from "../App";
 
 import "./SinglePost.css";
 // const Carousel = require("react-responsive-carousel").Carousel;
@@ -14,7 +15,7 @@ export default function SinglePost() {
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get("/posts/" + path);
+      const res = await axios.get(`${API_URL}/posts/` + path);
       setPost(res.data);
     };
     getPost();

@@ -82,6 +82,18 @@ app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 
+
+app.post("/api/watchproximity", async (req,res) => {
+try{
+const autom = {"count":8};
+res.status(200).json(autom);
+console.log(req.body);
+} catch {
+res.status(500).json(req.body);
+console.log(err);
+}
+});
+
 app.listen("5000", () => {
   console.log("Backend is running");
 });

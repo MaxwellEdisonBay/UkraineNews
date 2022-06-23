@@ -20,6 +20,8 @@ const useWindowSize = () => {
           height: window.innerHeight,
         });
         /* global google */
+        const google = window.google;
+
         google.accounts.id.renderButton(document.getElementById("signInDiv"), {
           type: "standard",
           shape: "circle",

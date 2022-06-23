@@ -15,7 +15,7 @@ import Single from "./components/pages/Single";
 import axios from "axios";
 import { Context } from "./context/Context";
 
-export const API_URL = "http://localhost:5000/api";
+export const API_URL = "https://ukrajinazije.cz/api";
 
 function App() {
   const { dispatch, user } = useContext(Context);
@@ -47,6 +47,8 @@ function App() {
 
   useEffect(() => {
     /* global google */
+    const google = window.google;
+
     google.accounts.id.initialize({
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: handleCallbackResponse,

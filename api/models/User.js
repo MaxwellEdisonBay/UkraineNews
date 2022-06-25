@@ -4,34 +4,24 @@ const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: false,
-      unique: false,
-      default: "",
     },
-    name: {
+
+    id: {
       type: String,
-      required: true,
-      unique: false,
+      unique: true,
     },
+
+    firstName: String,
+    lastName: String,
     email: {
       type: String,
       required: true,
       unique: true,
     },
-    password: {
+    password: String,
+
+    profilePhoto: {
       type: String,
-      required: false,
-      default: "",
-    },
-    profile_pic: {
-      type: String,
-      default: "",
-    },
-    googleCred: {
-      type: String,
-      required: false,
-      unique: false,
-      default: "",
     },
     group: {
       type: String,
@@ -39,6 +29,8 @@ const UserSchema = new mongoose.Schema(
       unique: false,
       default: "user",
     },
+    source: { type: String, required: [true, "source not specified"] },
+    lastVisited: { type: Date, default: new Date() },
   },
   { timestamps: true }
 );

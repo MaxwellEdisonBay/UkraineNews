@@ -4,15 +4,21 @@ const User = require("../models/User");
 
 //CREATE POST
 router.post("/", async (req, res) => {
-  const user = await User.findById(req.body.userID);
-  const isAdmin = user.group === "admin";
+  let isAdmin = false;
+  const user = await User.findOne({ _id: req.user._id });
+  if (user.group === "admin") {
+    isAdmin = true;
+    req.user.group = user.group;
+    console.log(user);
+  }
+
   console.log(isAdmin);
   const postData = { ...req.body };
   if (isAdmin) {
     postData.acceptedBy = req.body.userID;
   }
   const newPost = new Post(postData);
-  console.log(newPost);
+  // console.log(newPost);
   try {
     await newPost.save((error, result) => {
       if (!error) {
@@ -98,6 +104,7 @@ router.get("/", async (req, res) => {
     } else {
       posts = await Post.find({ acceptedBy: { $ne: "" } }).sort({ _id: -1 });
     }
+    // console.log(req.user);
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);

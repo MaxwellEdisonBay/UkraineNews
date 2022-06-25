@@ -24,6 +24,22 @@
   transition: all 0.3s ease-out;
 }
 
+.btn--black {
+  background-color: #0e1111;
+  color: #fff;
+  border: 1px solid #0e1111;
+  border-radius: 10px;
+}
+
+.btn--black:hover {
+  transform: scale(1.05);
+}
+
+.btn--small {
+  padding: 4px 15px;
+  font-size: 15px;
+}
+
 .btn--medium {
   padding: 8px 20px;
   font-size: 20px;
@@ -38,5 +54,6 @@
 .btn--large:hover {
   background: #fff;
   color: #24242424;
+  border-color: #24242424;
   transition: all 0.3s ease-out;
 }

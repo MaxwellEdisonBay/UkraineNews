@@ -3,7 +3,7 @@ import { useContext, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Context } from "../../context/Context";
 import "./Write.css";
-import { Container } from "../dnd/Container";
+import { Container } from "../../components/dnd/Container";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Editor } from "@tinymce/tinymce-react";
@@ -14,6 +14,7 @@ import { API_URL } from "../../App";
 import storage from "../../FirebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Oval } from "react-loader-spinner";
+import DOMPurify from "dompurify";
 
 export default function Write() {
   const { user, dispatch, isFetching } = useContext(Context);
@@ -55,9 +56,9 @@ export default function Write() {
     e.preventDefault();
     dispatch({ type: "FETCHING_START" });
     const newPost = {
-      username: user.name,
+      username: user.firstName + " " + user.lastName,
       title: title,
-      text: text,
+      text: DOMPurify.sanitize(text),
       userID: user._id,
     };
     const filenames = [];
@@ -66,7 +67,12 @@ export default function Write() {
       newPost.media = filenames;
       console.log(filenames);
       try {
-        const res = await axios.post(`${API_URL}/posts`, newPost);
+        const res = await axios.post(`${API_URL}/api/posts`, newPost, {
+          withCredentials: true,
+          headers: {
+            "Access-Control-Allow-Credentials": true,
+          },
+        });
         console.log(res);
         window.location.replace("/");
         // window.location.replace("/post/" + res.data._id);
@@ -174,7 +180,7 @@ export default function Write() {
       }
       try {
         console.log("Started uploading");
-        await axios.post(`${API_URL}/upload`, data);
+        await axios.post(`${API_URL}/api/upload`, data);
       } catch (error) {
         console.log(error);
         // TODO: Add error UI handling
@@ -183,7 +189,7 @@ export default function Write() {
     newPost.media = filenames;
     console.log(filenames);
     try {
-      const res = await axios.post(`${API_URL}/posts`, newPost);
+      const res = await axios.post(`${API_URL}/api/posts`, newPost);
       console.log(res);
       // window.location.replace("/post/" + res.data._id);
     } catch (error) {

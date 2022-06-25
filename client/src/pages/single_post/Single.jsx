@@ -1,4 +1,4 @@
-import SinglePost from "../SinglePost";
+import SinglePost from "./SinglePost";
 import "./Single.css";
 import React from "react";
 

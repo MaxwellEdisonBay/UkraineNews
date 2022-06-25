@@ -9,7 +9,7 @@ function Cards({ posts }) {
       <div className="cards__container">
         <div className="cards__wrapper">
           {posts.map((p, index) => (
-            <ul className="cards__items">
+            <ul className="cards__items" key={p._id}>
               <CardItem post={p} index={index} />
             </ul>
           ))}

@@ -1,11 +1,11 @@
 const router = require("express").Router();
 const User = require("../models/User");
-const user = require("../models/User");
 const bcrypt = require("bcrypt");
 const { OAuth2Client } = require("google-auth-library");
 const { checkGroup } = require("./Utils");
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 const Group = require("../models/Group");
+const passport = require("passport");
 
 async function verify(token) {
   const ticket = await client.verifyIdToken({

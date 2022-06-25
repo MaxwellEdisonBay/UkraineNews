@@ -19,21 +19,6 @@ const useWindowSize = () => {
           width: window.innerWidth,
           height: window.innerHeight,
         });
-        /* global google */
-        const google = window.google;
-
-        google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-          type: "standard",
-          shape: "circle",
-          text: "continue_with",
-        });
-        google.accounts.id.renderButton(
-          document.getElementById("signInMobileDiv"),
-          {
-            type: "icon",
-            shape: "circle",
-          }
-        );
       }
 
       // Add event listener

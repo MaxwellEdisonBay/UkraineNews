@@ -1,32 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import JoLPlayer from "jol-player";
 import Carousel from "nuka-carousel";
 import "./CardItem.css";
-import useWindowSize from "../hooks/useWidowSize";
+import useWindowSize from "../../hooks/useWidowSize";
+import ShowMoreText from "react-show-more-text";
+import { sanitize } from "../../utils/htmlParser";
+import Lightbox from "react-image-lightbox";
+import "react-image-lightbox/style.css";
 
-function CardItem({ post, slides }) {
+function CardItem({ post }) {
   const size = useWindowSize();
   const coeff = size.width > 960 ? 0.025 : 0.045;
   const containerStyles = {
     width: `${size.width * 16 * coeff}px`,
     height: `${size.width * 9 * coeff}px`,
   };
+  const isLong = [...post.text].length > 100;
 
   function isVideo(type) {
     return type === "video";
   }
 
+  const postText = sanitize(post.text);
+
+  const [boxUrl, setBoxUrl] = useState(null);
+
   return (
     <li className="cards__item">
+      {boxUrl && (
+        <Lightbox mainSrc={boxUrl} onCloseRequest={() => setBoxUrl(null)} />
+      )}
+
       <div className="cards__item__div">
-        {/* <figure className="cards__item__pic-wrap" data-category={post.title}>
-           <img className="cards__item__img" alt="Travel" src={""} /> 
-          
-        </figure> */}
         {post.media.length !== 0 && (
           <div style={containerStyles}>
             <Carousel
+              wrapAround={true}
+              dragThreshold={0.1}
               defaultControlsConfig={{
                 pagingDotsStyle: {
                   height: "15px",
@@ -37,6 +48,7 @@ function CardItem({ post, slides }) {
               {post.media.map((m) =>
                 isVideo(m.type) ? (
                   <JoLPlayer
+                    key={m.url}
                     option={{
                       videoSrc: m.url,
                       width: size.width * 16 * coeff,
@@ -51,6 +63,7 @@ function CardItem({ post, slides }) {
                   />
                 ) : (
                   <div
+                    key={m.url}
                     style={{
                       width: `${size.width * 16 * coeff}px`,
                       height: `${size.width * 9 * coeff}px`,
@@ -62,6 +75,7 @@ function CardItem({ post, slides }) {
                   >
                     <img
                       src={`${m.url}`}
+                      onClick={() => setBoxUrl(m.url)}
                       style={{
                         // FIXME: scale-down better image solution
                         objectFit: "cover",
@@ -72,19 +86,6 @@ function CardItem({ post, slides }) {
                   </div>
                 )
               )}
-
-              {/* {slides.map((slide, slideIndex) => (
-              <div
-                style={{
-                  width: `${size.width * 16 * coeff}px`,
-                  height: `${size.width * 9 * coeff}px`,
-                  borderRadius: "10px",
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                  backgroundImage: `url(${slide.url})`,
-                }}
-              ></div>
-            ))} */}
             </Carousel>
           </div>
         )}
@@ -108,16 +109,35 @@ function CardItem({ post, slides }) {
           className="cards__item__text"
           dangerouslySetInnerHTML={{ __html: post.text }}
         ></div> */}
+
         <div
           className="cards__item__text__container"
-          style={{ width: `${size.width * 16 * coeff}px` }}
+          style={{
+            width: `${size.width * 16 * coeff}px`,
+          }}
         >
-          <p
-            className="cards__item__text"
-            dangerouslySetInnerHTML={{ __html: post.text }}
-          >
-            {/* {post.text.replace(/<\/?[^>]+(>|$)/g, "")} */}
-          </p>
+          {isLong ? (
+            <ShowMoreText
+              /* Default options */
+              lines={3}
+              more="Zobrazit více"
+              less="Skrýt"
+              // className="content-css"
+              // anchorClass="my-anchor-css-class"
+              expanded={!isLong}
+              truncatedEndingComponent={"... "}
+            >
+              <p
+                className="cards__item__text"
+                dangerouslySetInnerHTML={{ __html: postText }}
+              />
+            </ShowMoreText>
+          ) : (
+            <p
+              className="cards__item__text"
+              dangerouslySetInnerHTML={{ __html: postText }}
+            />
+          )}
         </div>
       </div>
     </li>

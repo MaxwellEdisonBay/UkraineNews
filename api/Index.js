@@ -6,11 +6,20 @@ const authRoute = require("./routes/Auth");
 const userRoute = require("./routes/Users");
 const postRoute = require("./routes/Posts");
 const categoryRoute = require("./routes/Categories");
-const multer = require("multer");
 const cors = require("cors");
+const passportSetup = require("./passport");
 var bodyParser = require("body-parser");
+const cookieSession = require("cookie-session");
+const auth2Route = require("./routes/Auth2");
+const passport = require("passport");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
 
 dotenv.config();
 
@@ -23,75 +32,33 @@ mongoose
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    console.log("test");
-    cb(null, "../client/build/static/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname);
-  },
-});
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["prvKey"],
+    maxAge: 24 * 60 * 60 * 100,
+    // maxAge: 30 * 100,
+  })
+);
 
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 50 * 1024 * 1024 },
-}).any();
-// app.post("/api/upload", upload.single("file"), (req, res, next) => {
-//   res.status(200).json("File has been uploaded");
-//   // console.log(req);
-// });
-app.post("/api/upload", (req, res) => {
-  upload(req, res, function (err) {
-    console.log(err);
-
-    if (err instanceof multer.MulterError) {
-      // A Multer error occurred when uploading.
-      res
-        .status(500)
-        .send({ error: { message: `Multer uploading error: ${err.message}` } })
-        .end();
-      return;
-    } else if (err) {
-      // An unknown error occurred when uploading.
-      if (err.name == "ExtensionError") {
-        res
-          .status(413)
-          .send({ error: { message: err.message } })
-          .end();
-      } else {
-        res
-          .status(500)
-          .send({
-            error: { message: `unknown uploading error: ${err.message}` },
-          })
-          .end();
-      }
-      return;
-    }
-
-    // Everything went fine.
-    // show file `req.files`
-    // show body `req.body`
-    res.status(200).end("Your files uploaded.");
-  });
-});
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
+app.use("/auth", auth2Route);
 
-
-app.post("/api/watchproximity", async (req,res) => {
-try{
-const autom = {"count":8};
-res.status(200).json(autom);
-console.log(req.body);
-} catch {
-res.status(500).json(req.body);
-console.log(err);
-}
+app.post("/api/watchproximity", async (req, res) => {
+  try {
+    const autom = { count: 8 };
+    res.status(200).json(autom);
+    console.log(req.body);
+  } catch {
+    res.status(500).json(req.body);
+    console.log(err);
+  }
 });
 
 app.listen("5000", () => {

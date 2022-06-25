@@ -1,9 +1,9 @@
 import React from "react";
-import "../App.css";
-import { Button } from "./Button";
-import "./HeroSection.css";
+import "../../App.css";
+import { Button } from "../main_button/Button";
+import "./LandingSection.css";
 
-function HeroSection({ scrollToPosts }) {
+function LandingSection({ scrollToPosts }) {
   return (
     <div className="hero-container">
       <video src="/videos/background1_med.mp4" autoPlay loop muted />
@@ -31,4 +31,4 @@ function HeroSection({ scrollToPosts }) {
   );
 }
 
-export default HeroSection;
+export default LandingSection;

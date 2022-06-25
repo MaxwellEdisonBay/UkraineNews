@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "./Button";
+import { Button } from "../main_button/Button";
 import "./Footer.css";
 
 function Footer() {
+  const imageBasePath =
+    window.location.protocol + "//" + window.location.host + "/";
   return (
     <div className="footer-container">
       {/* <section className="footer-subscription">
@@ -64,7 +66,12 @@ function Footer() {
         <div className="social-media-wrap">
           <div className="footer-logo">
             <Link to="/" className="social-logo">
-              Válka UA <img src="/ukraine.png" alt="Logo" className="ukraine" />
+              Válka UA{" "}
+              <img
+                src={imageBasePath + "ukraine.png"}
+                alt="Logo"
+                className="ukraine"
+              />
             </Link>
           </div>
           <small className="website-rights">Válka na Ukrajině © 2022</small>

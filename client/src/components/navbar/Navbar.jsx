@@ -4,17 +4,14 @@ import "./Navbar.css";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
-import useWindowSize from "../hooks/useWidowSize";
+import useWindowSize from "../../hooks/useWidowSize";
 import { useContext } from "react";
-import { Context } from "../context/Context";
+import { Context } from "../../context/Context";
+import { googleLogin, googleLogout } from "../../utils/authHelper";
 
 function Navbar() {
   const size = useWindowSize();
-  const { user, dispatch } = useContext(Context);
-
-  const handleSignOut = () => {
-    dispatch({ type: "LOGOUT" });
-  };
+  const { user } = useContext(Context);
 
   const [click, setClick] = useState(false);
   const [isLargeScreen, setLargeScreen] = useState(size.width > 960);
@@ -26,40 +23,50 @@ function Navbar() {
     setLargeScreen(size.width > 960);
   }, [size]);
 
+  const imageBasePath =
+    window.location.protocol + "//" + window.location.host + "/";
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
           VálkaUA
           <img
-            src="/ukraine.png"
+            src={imageBasePath + "ukraine.png"}
             alt="Logo"
             className="ukraine"
             hidden={!isLargeScreen}
           />
         </Link>
         <div className="mobile-menu">
-          <div
-            id="signInMobileDiv"
-            className="sign-in-mobile-div"
-            hidden={isLargeScreen || user}
-          />
+          <div className="sign-in-mobile-div">
+            <img
+              src={imageBasePath + "/images/google.png"}
+              alt="google"
+              className="user-picture"
+              hidden={isLargeScreen || user}
+              onClick={googleLogin}
+            />
+          </div>
           {user && !isLargeScreen && (
             <Menu
               menuButton={
                 <img
-                  src={user.profile_pic}
+                  src={user.profilePhoto}
                   alt="Avatar"
+                  referrerPolicy="no-referrer"
                   className="user-picture"
                 />
               }
               className="mobile-signin-menu"
             >
-              <MenuItem disabled>{user.name}</MenuItem>
+              <MenuItem disabled>
+                {user.firstName + " " + user.lastName}
+              </MenuItem>
               <Link to="/settings" className="context-links">
                 <MenuItem>Nastavení</MenuItem>
               </Link>
-              <MenuItem onClick={handleSignOut}>Odhlásit se</MenuItem>
+              <MenuItem onClick={googleLogout}>Odhlásit se</MenuItem>
             </Menu>
           )}
           <div className="menu-icon" onClick={handleClick}>
@@ -87,36 +94,33 @@ function Navbar() {
               Nová zpráva
             </Link>
           </li>
-
-          {/* <li>
-            <Link
-              to="/login"
-              className="nav-links-mobile"
-              onClick={closeMobileMenu}
-            >
-              Sign Up
-            </Link>
-          </li> */}
+          <li className="nav-item" hidden={!isLargeScreen || user}>
+            <div className="nav-links-empty">
+              <div className="sign-in-full" onClick={googleLogin}>
+                <p>Sign in with Google</p>
+                <img src={imageBasePath + "images/google.png"} alt="google" />
+              </div>
+            </div>
+          </li>
         </ul>
         {user && isLargeScreen && (
           <Menu
             menuButton={
               <img
-                src={user.profile_pic}
+                src={user.profilePhoto}
                 alt="Avatar"
+                referrerPolicy="no-referrer"
                 className="user-picture"
               />
             }
           >
-            <MenuItem disabled>{user.name}</MenuItem>
+            <MenuItem disabled>{user.firstName + " " + user.lastName}</MenuItem>
             <Link to="/settings" className="context-links">
               <MenuItem>Nastavení</MenuItem>
             </Link>
-            <MenuItem onClick={handleSignOut}>Odhlásit se</MenuItem>
+            <MenuItem onClick={googleLogout}>Odhlásit se</MenuItem>
           </Menu>
         )}
-
-        <div id="signInDiv" hidden={!isLargeScreen || user} />
       </div>
     </nav>
   );

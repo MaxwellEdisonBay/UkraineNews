@@ -65,7 +65,7 @@
 
 .context-links {
   text-decoration: "none";
-  color: "#000"
+  color: "#0e1111"
 }
 
 .nav-links {
@@ -79,6 +79,15 @@
 
 .nav-links-disabled {
   color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  height: 100%;
+  cursor: default;
+}
+
+.nav-links-empty {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -105,8 +114,40 @@
 }
 
 .sign-in-mobile-div {
-  padding-right: 20px;
+  margin-right: 20px;
+  width: 40px;
+  height: 40px;
 }
+
+.sign-in-full {
+  cursor: pointer;
+  display: flex;
+  overflow: hidden;
+  flex-direction: row;
+  align-self: center;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 230px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #fff;
+  transition: transform .2s;
+}
+
+.sign-in-full:hover {
+  transform: scale(1.05);
+}
+
+.sign-in-full>img {
+  width: 20px;
+  height: 20px;
+}
+
+.sign-in-full>p {
+
+  font-size: medium;
+}
+
 
 @media screen and (max-width: 960px) {
   .NavbarItems {

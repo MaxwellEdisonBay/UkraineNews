@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon Index.js"
+    "start": "NODE_ENV=production node Index.js",
+    "dev": "NODE_ENV=development nodemon Index.js"
   },
   "author": "Ivan Teslenko",
   "license": "ISC",

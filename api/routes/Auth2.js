@@ -1,8 +1,10 @@
 const router = require("express").Router();
 
 const passport = require("passport");
-// const CLIENT_URL = "http://localhost:3000";
-const CLIENT_URL = "https://ukrajinazije.cz";
+const clientURL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_CLIENT_URL_PROD
+    : process.env.REACT_APP_CLIENT_URL_DEV;
 
 router.get("/login/success", (req, res) => {
   console.log("LOGIN-SUCCESS");
@@ -35,14 +37,14 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: CLIENT_URL,
+    successRedirect: clientURL,
     failureRedirect: "/login/failed",
   })
 );
 
 router.get("/logout", (req, res) => {
   req.logout();
-  res.redirect(CLIENT_URL);
+  res.redirect(clientURL);
   // req.session.destroy(() => {
   //   res.clearCookie("connect.sid");
   //   res.redirect("/");

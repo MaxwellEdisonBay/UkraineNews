@@ -13,16 +13,20 @@ const cookieSession = require("cookie-session");
 const auth2Route = require("./routes/Auth2");
 const passport = require("passport");
 
+dotenv.config();
+
+const clientURL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_CLIENT_URL_PROD
+    : process.env.REACT_APP_CLIENT_URL_DEV;
+
 app.use(
   cors({
-    // origin: "http://localhost:3000",
-    origin: "https://ukrajinazije.cz",
+    origin: clientURL,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
 );
-
-dotenv.config();
 
 // app.use(express.json());
 app.use(bodyParser.json({ limit: "50mb" }));

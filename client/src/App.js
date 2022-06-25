@@ -11,8 +11,7 @@ import Settings from "./pages/settings/Settings";
 import Single from "./pages/single_post/Single";
 import { Context } from "./context/Context";
 
-export const API_URL = "https://ukrajinazije.cz";
-// export const API_URL = "http://localhost:5000";
+export const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
   const { user } = useContext(Context);

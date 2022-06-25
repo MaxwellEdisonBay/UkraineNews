@@ -24,3 +24,7 @@ yarn-debug.log*
 yarn-error.log*
 client/.env
 api/.env
+api/.env.development
+api/.env.production
+client/.env.development
+client/.env.production

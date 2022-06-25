@@ -15,7 +15,8 @@ const passport = require("passport");
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
+    origin: "https://ukrajinazije.cz",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })

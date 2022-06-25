@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useReducer } from "react";
+import { API_URL } from "../App"
 import Reducer from "./Reducer";
 
 const INITIAL_STATE = {
@@ -17,7 +18,7 @@ export const ContextProvider = ({ children }) => {
     dispatch({ type: "LOGIN_START" });
     const getUser = () => {
       axios
-        .get("http://localhost:5000/auth/login/success", {
+        .get(API_URL + "/auth/login/success", {
           withCredentials: true,
           headers: {
             "Access-Control-Allow-Credentials": true,

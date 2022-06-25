@@ -5,6 +5,7 @@ const passport = require("passport");
 const CLIENT_URL = "https://ukrajinazije.cz";
 
 router.get("/login/success", (req, res) => {
+  console.log("LOGIN-SUCCESS");
   if (req.user) {
     res.status(200).json({
       success: true,
@@ -12,6 +13,7 @@ router.get("/login/success", (req, res) => {
       user: req.user,
       // cookies: req.cookies
     });
+    console.log(req.user);
   }
 });
 

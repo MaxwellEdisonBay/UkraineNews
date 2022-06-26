@@ -11,7 +11,8 @@ import "react-image-lightbox/style.css";
 
 function CardItem({ post }) {
   const size = useWindowSize();
-  const coeff = size.width > 960 ? 0.025 : 0.045;
+  const isMobile = size.width < 960;
+  const coeff = !isMobile ? 0.025 : 0.045;
   const containerStyles = {
     width: `${size.width * 16 * coeff}px`,
     height: `${size.width * 9 * coeff}px`,
@@ -40,6 +41,30 @@ function CardItem({ post }) {
           <div style={containerStyles}>
             <Carousel
               withoutControls={isOneMedia}
+              renderCenterLeftControls={
+                isMobile
+                  ? null
+                  : ({ previousSlide }) => (
+                      <button
+                        className="slider-swipe-button"
+                        onClick={previousSlide}
+                      >
+                        ❮
+                      </button>
+                    )
+              }
+              renderCenterRightControls={
+                isMobile
+                  ? null
+                  : ({ previousSlide }) => (
+                      <button
+                        className="slider-swipe-button"
+                        onClick={previousSlide}
+                      >
+                        ❯
+                      </button>
+                    )
+              }
               dragging={!isOneMedia}
               swiping={!isOneMedia}
               wrapAround={true}

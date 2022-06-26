@@ -12,3 +12,20 @@
 .slider-control-bottomcenter li {
     margin-right: 5px;
 }
+
+.slider-swipe-button {
+    height: 80px;
+    width: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #FFF;
+    border-radius: 0 10px 10px 0;
+    border-style: none;
+    transition: all 0.1s ease-out;
+
+}
+
+.slider-swipe-button:hover {
+    transform: scale(1.05);
+    transition: all 0.1s ease-out;
+
+}

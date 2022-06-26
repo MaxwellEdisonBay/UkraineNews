@@ -221,7 +221,7 @@ export default function SinglePost() {
             apiKey={process.env.REACT_APP_TINY_KEY}
             className="write-input write-text"
             placeholder="Tell your story..."
-            initialValue={editText}
+            initialValue={post.text}
             disabled={isFetching}
             onEditorChange={(content) => {
               setEditText(content);

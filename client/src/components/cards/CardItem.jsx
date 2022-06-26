@@ -17,7 +17,7 @@ function CardItem({ post }) {
     height: `${size.width * 9 * coeff}px`,
   };
   const isLong = [...post.text].length > 100;
-
+  const isOneMedia = post.media.length <= 1;
   function isVideo(type) {
     return type === "video";
   }
@@ -39,6 +39,9 @@ function CardItem({ post }) {
         {post.media.length !== 0 && (
           <div style={containerStyles}>
             <Carousel
+              withoutControls={isOneMedia}
+              dragging={!isOneMedia}
+              swiping={!isOneMedia}
               wrapAround={true}
               dragThreshold={0.1}
               defaultControlsConfig={{

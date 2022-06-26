@@ -12,7 +12,7 @@ import "react-image-lightbox/style.css";
 function CardItem({ post }) {
   const size = useWindowSize();
   const isMobile = size.width < 960;
-  const coeff = !isMobile ? 0.025 : 0.045;
+  const coeff = !isMobile ? 0.025 : 0.055;
   const containerStyles = {
     width: `${size.width * 16 * coeff}px`,
     height: `${size.width * 9 * coeff}px`,

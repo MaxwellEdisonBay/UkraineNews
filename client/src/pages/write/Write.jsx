@@ -1,13 +1,11 @@
 import axios from "axios";
-import { useContext, useRef, useState } from "react";
-import TextareaAutosize from "react-textarea-autosize";
+import { useContext, useState } from "react";
 import { Context } from "../../context/Context";
 import "./Write.css";
 import { Container } from "../../components/dnd/Container";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Editor } from "@tinymce/tinymce-react";
-import { useEffect } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import Fab from "@mui/material/Fab";
 import { API_URL } from "../../App";
@@ -23,10 +21,6 @@ export default function Write() {
   const [files, setFiles] = useState([]);
   const allowedFileTypes = ["jpg", "png", "mp4", "MOV", "jpeg"];
   const videoFileTypes = ["mp4", "MOV"];
-
-  // useEffect(() => {
-  //   console.log(text);
-  // }, [text]);
 
   const addFiles = (addFiles) => {
     const tempFile = [...files];

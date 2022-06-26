@@ -10,16 +10,20 @@ import Write from "./pages/write/Write";
 import Settings from "./pages/settings/Settings";
 import Single from "./pages/single_post/Single";
 import { Context } from "./context/Context";
+import ScrollToTop from "./utils/scrollToTop";
+import { NotificationContainer } from "react-notifications";
+import "react-notifications/lib/notifications.css";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
   const { user } = useContext(Context);
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" exact element={<Home />} />
@@ -29,6 +33,7 @@ function App() {
         <Route path="/post/:postId" element={<Single />} />
       </Routes>
       <Footer />
+      <NotificationContainer />
     </Router>
   );
 }

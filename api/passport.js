@@ -26,7 +26,7 @@ passport.use(
       const source = "google";
 
       const currentUser = await userService.getUserByEmail({ email });
-      console.log(currentUser);
+      // console.log(currentUser);
       if (!currentUser) {
         const newUser = await userService.addGoogleUser({
           id,
@@ -35,7 +35,7 @@ passport.use(
           lastName,
           profilePhoto,
         });
-        console.log(newUser);
+        console.log("Created user " + email);
         return done(null, newUser);
       }
       if (currentUser.source != "google") {

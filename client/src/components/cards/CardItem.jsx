@@ -23,9 +23,12 @@ function CardItem({ post }) {
   }
 
   const postText = sanitize(post.text);
+  // const postText = post.text;
+  // const postText = post.text.replace(/<(\/?|\!?)(?:img|i|b|a)>/g, "");
 
   const [boxUrl, setBoxUrl] = useState(null);
 
+  // console.log(postText);
   return (
     <li className="cards__item">
       {boxUrl && (
@@ -94,16 +97,27 @@ function CardItem({ post }) {
           className="cards__item__title_container"
           style={{ width: `${size.width * 16 * coeff}px` }}
         >
-          <Link className="cards__item__link" to={`/post/${post._id}`}>
-            <h5 className="cards__item__title">{post.title}</h5>
-          </Link>
+          {/* <Link className="cards__item__link" to={`/post/${post._id}`}> */}
+          <h5
+            className="cards__item__title"
+            onClick={() => {
+              window.open(`/post/${post._id}`, "_blank");
+            }}
+          >
+            {post.title}
+          </h5>
+          {/* </Link> */}
         </div>
         <div
           className="cards__item__info_container"
           style={{ width: `${size.width * 16 * coeff}px` }}
         >
           <p>{post.username}</p>
-          <p>{new Date(post.updatedAt).toLocaleString()}</p>
+          <p>
+            {new Date(post.updatedAt).toLocaleString("en-GB", {
+              hour12: false,
+            })}
+          </p>
         </div>
         {/* <div
           className="cards__item__text"
@@ -119,6 +133,7 @@ function CardItem({ post }) {
           {isLong ? (
             <ShowMoreText
               /* Default options */
+              className="show-more-text"
               lines={3}
               more="Zobrazit více"
               less="Skrýt"

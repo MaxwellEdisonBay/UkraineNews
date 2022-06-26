@@ -25,6 +25,7 @@
     "react-dom": "^18.1.0",
     "react-image-lightbox": "^5.1.4",
     "react-loader-spinner": "^5.1.5",
+    "react-notifications": "^1.7.3",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-show-more-text": "^1.5.2",

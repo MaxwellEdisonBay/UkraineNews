@@ -138,12 +138,36 @@ p {
   color: #252e48;
   font-size: 24px;
   line-height: 24px;
+  cursor: pointer;
+}
+
+.cards__item__title:hover {
+  text-decoration: underline;
 }
 
 .cards__item__text {
   color: #252e48;
   font-size: 16px;
   line-height: 20px;
+  word-break: normal;
+  white-space: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.cards__item__text>p {
+  width: 100%;
+  word-break: normal;
+  display: flex;
+  flex-direction: column;
+}
+
+.show-more-text {
+  width: 100%;
+  word-break: break-all;
+  display: flex;
+  flex-direction: column;
+
 }
 
 @media only screen and (min-width: 1200px) {

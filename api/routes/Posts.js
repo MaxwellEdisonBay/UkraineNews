@@ -9,10 +9,10 @@ router.post("/", async (req, res) => {
   if (user.group === "admin") {
     isAdmin = true;
     req.user.group = user.group;
-    console.log(user);
+    // console.log(user);
   }
 
-  console.log(isAdmin);
+  // console.log(isAdmin);
   const postData = { ...req.body };
   if (isAdmin) {
     postData.acceptedBy = req.body.userID;
@@ -36,14 +36,15 @@ router.post("/", async (req, res) => {
 
 //UPDATE POST
 router.put("/:id", async (req, res) => {
+  console.log(req.user);
   try {
     const post = await Post.findById(req.params.id);
-    if (post.username === req.body.username) {
+    if (post.userID === req.user._id || req.user.group === "admin") {
       try {
         const updatedPost = await Post.findByIdAndUpdate(
-          req.params.id,
+          req.body._id,
           {
-            $set: req.body,
+            $set: { title: req.body.title, text: req.body.text },
           },
           { new: true }
         );
@@ -56,13 +57,16 @@ router.put("/:id", async (req, res) => {
     res.status(500).json(err);
     console.log(err);
   }
+  // console.log(req.body);
+  // res.status(200).json("res");
 });
 
 //DELETE POST
 router.delete("/:id", async (req, res) => {
   try {
+    console.log(req.user);
     const post = await Post.findById(req.params.id);
-    if (post.username === req.body.username) {
+    if (post.userID === req.user._id || req.user.group === "admin") {
       try {
         await post.delete();
         res.status(200).json("Post has been deleted");

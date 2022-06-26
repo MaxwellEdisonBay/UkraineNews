@@ -12,6 +12,11 @@ function Home() {
   const { search } = useLocation();
   const postsSection = useRef(null);
 
+  window.addEventListener("popstate", function (event) {
+    //Your code here
+    this.window.location.reload();
+  });
+
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await axios.get(`${API_URL}/api/posts` + search, {

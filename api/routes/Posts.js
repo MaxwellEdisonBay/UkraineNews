@@ -2,6 +2,8 @@ const router = require("express").Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
 
+const POST_BATCH_SIZE = 4;
+
 //CREATE POST
 router.post("/", async (req, res) => {
   let isAdmin = false;
@@ -16,6 +18,7 @@ router.post("/", async (req, res) => {
   const postData = { ...req.body };
   if (isAdmin) {
     postData.acceptedBy = req.body.userID;
+    postData.reviewedAt = new Date();
   }
   const newPost = new Post(postData);
   // console.log(newPost);
@@ -93,27 +96,75 @@ router.get("/:id", async (req, res) => {
 
 //GET ALL POSTS
 router.get("/", async (req, res) => {
-  const username = req.query.user;
-  const catName = req.query.cat;
+  const page = req.query.page;
+  const pending = req.query.pending;
   try {
     let posts;
-    if (username) {
-      posts = await Post.find({ username }).sort({ _id: -1 });
-    } else if (catName) {
-      posts = await Post.find({
-        categories: {
-          $in: [catName],
-        },
-      });
-    } else {
-      posts = await Post.find({ acceptedBy: { $ne: "" } }).sort({ _id: -1 });
+    if (page) {
+      posts = await Post.find({ acceptedBy: { $ne: null, $ne: "rejected" } })
+        .skip(page * POST_BATCH_SIZE)
+        .limit(POST_BATCH_SIZE)
+        .sort({ reviewedAt: -1 });
+    } else if (pending) {
+      if (req.user && req.user.group === "admin") {
+        posts = await Post.find({ acceptedBy: { $eq: null } }).sort({
+          _id: -1,
+        });
+      } else {
+        res
+          .status(401)
+          .json({ error: "You don't have permissions for this query" });
+      }
     }
+
     // console.log(req.user);
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
     console.log(err);
   }
+});
+
+// APPROVE POST
+router.post("/approve/:id", async (req, res) => {
+  try {
+    if (req.user && req.user.group === "admin") {
+      try {
+        await Post.findByIdAndUpdate(req.params.id, {
+          $set: { acceptedBy: req.user._id, reviewedAt: new Date() },
+        });
+        res.status(200).json("Post has been approved");
+      } catch (err) {}
+    } else {
+      res.status(401).json("You don't have permission!");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+  // console.log(req.body);
+  // res.status(200).json("res");
+});
+
+// REJECT POST
+router.post("/reject/:id", async (req, res) => {
+  try {
+    if (req.user && req.user.group === "admin") {
+      try {
+        await Post.findByIdAndUpdate(req.params.id, {
+          $set: { acceptedBy: "rejected", reviewedAt: new Date() },
+        });
+        res.status(200).json("Post has been rejected");
+      } catch (err) {}
+    } else {
+      res.status(401).json("You can update your posts only!");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+  // console.log(req.body);
+  // res.status(200).json("res");
 });
 
 module.exports = router;

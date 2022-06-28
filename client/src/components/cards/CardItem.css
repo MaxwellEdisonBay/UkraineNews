@@ -13,7 +13,7 @@
     margin-right: 5px;
 }
 
-.slider-swipe-button {
+.slider-swipe-button-left {
     height: 80px;
     width: 40px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -24,7 +24,19 @@
 
 }
 
-.slider-swipe-button:hover {
+.slider-swipe-button-right {
+    height: 80px;
+    width: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #FFF;
+    border-radius: 10px 0 0 10px;
+    border-style: none;
+    transition: all 0.1s ease-out;
+
+}
+
+.slider-swipe-button-left:hover,
+.slider-swipe-button-right:hover {
     transform: scale(1.05);
     transition: all 0.1s ease-out;
 

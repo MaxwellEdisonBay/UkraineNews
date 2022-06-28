@@ -1,0 +1,22 @@
+.admin-page {
+    min-height: 100vh;
+    margin-top: 20px;
+    margin-left: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.admin-menu {
+    height: 100px;
+    width: 200px;
+    z-index: 1;
+    padding-left: 3px;
+    padding-top: 3px;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-content {
+    padding: 0 10px;
+}

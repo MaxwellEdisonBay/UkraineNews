@@ -9,6 +9,7 @@ import { API_URL } from "../../App";
 
 function Home() {
   const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const { search } = useLocation();
   const postsSection = useRef(null);
 
@@ -16,17 +17,20 @@ function Home() {
     //Your code here
     this.window.location.reload();
   });
+  const fetchPosts = async () => {
+    const response = await axios.get(
+      `${API_URL}/api/posts/?page=${currentPage}`
+    );
+    let newPosts = [...posts];
+    newPosts = newPosts.concat(response.data);
+    setPosts(newPosts);
+    const newPage = currentPage + 1;
+    setCurrentPage(newPage);
+    // console.log(posts);
+    // console.log(response.data);
+  };
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await axios.get(`${API_URL}/api/posts` + search, {
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Credentials": true,
-        },
-      });
-      setPosts(response.data);
-    };
     fetchPosts();
   }, [search]);
 
@@ -41,7 +45,7 @@ function Home() {
     <div>
       <LandingSection scrollToPosts={scrollToPosts} />
       <div ref={postsSection}>
-        <Cards posts={posts} />
+        <Cards posts={posts} fetchPosts={fetchPosts} />
       </div>
     </div>
   );

@@ -61,12 +61,7 @@ export default function Write() {
       newPost.media = filenames;
       console.log(filenames);
       try {
-        const res = await axios.post(`${API_URL}/api/posts`, newPost, {
-          withCredentials: true,
-          headers: {
-            "Access-Control-Allow-Credentials": true,
-          },
-        });
+        const res = await axios.post(`${API_URL}/api/posts`, newPost);
         console.log(res);
         window.location.replace("/");
         // window.location.replace("/post/" + res.data._id);

@@ -13,6 +13,7 @@ import { Context } from "./context/Context";
 import ScrollToTop from "./utils/scrollToTop";
 import { NotificationContainer } from "react-notifications";
 import "react-notifications/lib/notifications.css";
+import Admin from "./pages/admin/Admin";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/write" element={user ? <Write /> : <Login />} />
         <Route path="/settings" element={user ? <Settings /> : <Login />} />
         <Route path="/post/:postId" element={<Single />} />
+        <Route path="/admin" element={user ? <Admin /> : <Login />} />
       </Routes>
       <Footer />
       <NotificationContainer />

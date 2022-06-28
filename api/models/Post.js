@@ -41,7 +41,20 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: false,
       unique: false,
-      default: "",
+      default: null,
+    },
+    rejectedBy: {
+      type: String,
+      required: false,
+      unique: false,
+      default: null,
+    },
+    reviewedAt: {
+      type: Date,
+    },
+    source: {
+      type: String,
+      default: "author",
     },
   },
   { timestamps: true }

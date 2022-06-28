@@ -56,12 +56,7 @@ export default function SinglePost() {
       updatedPost.text = DOMPurify.sanitize(editText);
       updatedPost.title = editTitle;
       dispatch({ type: "FETCHING_START" });
-      const res = await axios.put(`${API_URL}/api/posts/${path}`, updatedPost, {
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Credentials": true,
-        },
-      });
+      const res = await axios.put(`${API_URL}/api/posts/${path}`, updatedPost);
       dispatch({ type: "FETCHING_FINISH" });
       createNotification("single_post_edit_saved");
       console.log(res);
@@ -75,13 +70,7 @@ export default function SinglePost() {
     dispatch({ type: "FETCHING_START" });
     const res = await axios.delete(
       `${API_URL}/api/posts/${path}`,
-
-      {
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Credentials": true,
-        },
-      },
+      {},
       { test: "test" }
     );
     dispatch({ type: "FETCHING_FINISH" });

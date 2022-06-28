@@ -24,6 +24,27 @@ export const createNotification = (type) => {
         closeTime
       );
       break;
+    case "admin_pending_approved":
+      NotificationManager.success(
+        "Success",
+        "Post has been approved",
+        closeTime
+      );
+      break;
+    case "admin_pending_rejected":
+      NotificationManager.success(
+        "Success",
+        "Post has been declined",
+        closeTime
+      );
+      break;
+    case "error_misc":
+      NotificationManager.error(
+        "Error",
+        "An error occured while your request processing",
+        closeTime
+      );
+      break;
     case "error":
       NotificationManager.error("Error message", "Click me!", 5000, () => {
         alert("callback");

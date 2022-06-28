@@ -23,6 +23,8 @@ function Navbar() {
     setLargeScreen(size.width > 960);
   }, [size]);
 
+  const isAdmin = user && user.group === "admin";
+
   const imageBasePath =
     window.location.protocol + "//" + window.location.host + "/";
 
@@ -94,6 +96,14 @@ function Navbar() {
               Nová zpráva
             </Link>
           </li>
+          {isAdmin && (
+            <li className="nav-item">
+              <Link to="/admin" className="nav-links" onClick={closeMobileMenu}>
+                Správce
+              </Link>
+            </li>
+          )}
+
           <li className="nav-item" hidden={!isLargeScreen || user}>
             <div className="nav-links-empty">
               <div className="sign-in-full" onClick={googleLogin}>

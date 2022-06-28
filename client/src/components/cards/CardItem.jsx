@@ -8,8 +8,14 @@ import ShowMoreText from "react-show-more-text";
 import { sanitize } from "../../utils/htmlParser";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
+import { Button } from "../main_button/Button";
 
-function CardItem({ post }) {
+function CardItem({
+  post,
+  isPendingMode = false,
+  handleReject = null,
+  handleApprove = null,
+}) {
   const size = useWindowSize();
   const isMobile = size.width < 960;
   const coeff = !isMobile ? 0.025 : 0.055;
@@ -28,7 +34,7 @@ function CardItem({ post }) {
   // const postText = post.text.replace(/<(\/?|\!?)(?:img|i|b|a)>/g, "");
 
   const [boxUrl, setBoxUrl] = useState(null);
-
+  const [pendingAction, setPendingAction] = useState(null);
   // console.log(postText);
   return (
     <li className="cards__item">
@@ -46,7 +52,7 @@ function CardItem({ post }) {
                   ? null
                   : ({ previousSlide }) => (
                       <button
-                        className="slider-swipe-button"
+                        className="slider-swipe-button-left"
                         onClick={previousSlide}
                       >
                         ❮
@@ -56,10 +62,10 @@ function CardItem({ post }) {
               renderCenterRightControls={
                 isMobile
                   ? null
-                  : ({ previousSlide }) => (
+                  : ({ nextSlide }) => (
                       <button
-                        className="slider-swipe-button"
-                        onClick={previousSlide}
+                        className="slider-swipe-button-right"
+                        onClick={nextSlide}
                       >
                         ❯
                       </button>
@@ -180,6 +186,70 @@ function CardItem({ post }) {
               className="cards__item__text"
               dangerouslySetInnerHTML={{ __html: postText }}
             />
+          )}
+          {isPendingMode && (
+            <div
+              style={{
+                marginTop: "20px",
+                width: "100%",
+              }}
+            >
+              {" "}
+              {pendingAction ? (
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "center",
+                    backgroundColor:
+                      pendingAction === "approve" ? "#7bae37" : "#ED4337",
+                    borderRadius: "10px",
+                    color: "#fff",
+                  }}
+                >
+                  {pendingAction === "approve" ? "SCHVÁLENO" : "ZAMÍTNUTO"}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "center",
+                    gap: "20px",
+                  }}
+                >
+                  <Button
+                    buttonStyle="btn--black"
+                    buttonSize="btn--small"
+                    onClick={() => {
+                      setPendingAction("reject");
+                      handleReject(post._id);
+                    }}
+                  >
+                    <i
+                      className="single-post-icon fa-solid fa-thumbs-down"
+                      style={{ color: "#ED4337", marginRight: "5px" }}
+                    />
+                    Zamítnout
+                  </Button>
+                  <Button
+                    buttonStyle="btn--black"
+                    buttonSize="btn--small"
+                    onClick={() => {
+                      setPendingAction("approve");
+                      handleApprove(post._id);
+                    }}
+                  >
+                    <i
+                      className="single-post-icon fa-solid fa-thumbs-up"
+                      style={{ color: "#7bae37", marginRight: "5px" }}
+                    />
+                    Schválit
+                  </Button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

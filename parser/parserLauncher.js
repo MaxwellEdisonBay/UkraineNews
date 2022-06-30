@@ -31,7 +31,7 @@ const ALLOWED_CHANNELS = ["u_now", "valkaua", "uniannet"];
     onError: (err) => console.log(err),
   });
   console.log("You should now be connected.");
-  // client.session.save(); // Save this string to avoid logging in again
+//  console.log(client.session.save()); // Save this string to avoid logging in again
 
   const chatsResponse = await client.invoke(
     new Api.messages.GetAllChats({

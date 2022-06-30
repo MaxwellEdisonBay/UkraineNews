@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
-const POST_BATCH_SIZE = 4;
+const POST_BATCH_SIZE = 20;
 
 //CREATE POST
 router.post("/", async (req, res) => {

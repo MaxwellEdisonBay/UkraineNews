@@ -14,6 +14,7 @@ import ScrollToTop from "./utils/scrollToTop";
 import { NotificationContainer } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import Admin from "./pages/admin/Admin";
+import Telegram from "./pages/telegram/Telegram";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
@@ -33,6 +34,7 @@ function App() {
         <Route path="/settings" element={user ? <Settings /> : <Login />} />
         <Route path="/post/:postId" element={<Single />} />
         <Route path="/admin" element={user ? <Admin /> : <Login />} />
+        <Route path="/telegram" element={<Telegram />} />
       </Routes>
       <Footer />
       <NotificationContainer />

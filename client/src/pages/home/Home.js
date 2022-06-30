@@ -19,7 +19,7 @@ function Home() {
   });
   const fetchPosts = async () => {
     const response = await axios.get(
-      `${API_URL}/api/posts/?page=${currentPage}`
+      `${API_URL}/api/posts/?page=${currentPage}&source=author`
     );
     let newPosts = [...posts];
     newPosts = newPosts.concat(response.data);
@@ -45,7 +45,11 @@ function Home() {
     <div>
       <LandingSection scrollToPosts={scrollToPosts} />
       <div ref={postsSection}>
-        <Cards posts={posts} fetchPosts={fetchPosts} />
+        <Cards
+          posts={posts}
+          fetchPosts={fetchPosts}
+          signText={"Aktuální zprávy z Ukrajiny"}
+        />
       </div>
     </div>
   );

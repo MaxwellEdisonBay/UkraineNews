@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
-
 const POST_BATCH_SIZE = 4;
 
 //CREATE POST
@@ -34,6 +33,59 @@ router.post("/", async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
     console.log(err);
+  }
+});
+
+//CREATE POST BY PARSER BOT
+router.post("/bot", async (req, res) => {
+  const botKey = process.env.REACT_APP_API_HEADER_SECRET;
+  const requestKey = req.get("authorization");
+  if (requestKey === botKey) {
+    const data = req.body;
+    // console.log(req.query.action);
+    // console.log(data);
+
+    switch (req.query.action) {
+      case "addFile": {
+        // console.log(data);
+        const filter = data.postId
+          ? {
+              _id: { $eq: data.postId },
+            }
+          : {
+              telegramGroupedId: { $eq: data.telegramGroupedId },
+            };
+        const updatedPost = await Post.findOneAndUpdate(
+          filter,
+          {
+            $push: { media: { url: data.url, type: data.type } },
+          },
+          { new: true }
+        );
+        // console.log("UPDATED POST");
+        // console.log(updatedPost);
+
+        res.status(200).json("File data received!");
+        break;
+      }
+      case "addPost": {
+        // FIXME: Bad solution - ignores posts without desc
+        let postId = null;
+        if (data.text !== "") {
+          const newPost = new Post(data);
+          // console.log(newPost);
+          const savedPost = await newPost.save();
+          postId = savedPost._id;
+        }
+        res.status(200).json({ id: postId });
+        // console.log("POST ADDED");
+        break;
+      }
+      default:
+        res.status(404).json("Unknown action");
+    }
+  } else {
+    res.status(401).json("Wrong bot key");
   }
 });
 
@@ -98,10 +150,18 @@ router.get("/:id", async (req, res) => {
 router.get("/", async (req, res) => {
   const page = req.query.page;
   const pending = req.query.pending;
+  const source = req.query.source;
   try {
     let posts;
     if (page) {
-      posts = await Post.find({ acceptedBy: { $ne: null, $ne: "rejected" } })
+      const filter = source
+        ? {
+            acceptedBy: { $ne: null, $ne: "rejected" },
+            source: { $eq: source },
+          }
+        : { acceptedBy: { $ne: null, $ne: "rejected" } };
+
+      posts = await Post.find(filter)
         .skip(page * POST_BATCH_SIZE)
         .limit(POST_BATCH_SIZE)
         .sort({ reviewedAt: -1 });

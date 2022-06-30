@@ -2,40 +2,15 @@ const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      unique: false,
-    },
-    text: {
-      type: String,
-      required: true,
-      unique: false,
-    },
-    thumbnail: {
-      type: String,
-      required: false,
-      unique: false,
-    },
-    username: {
-      type: String,
-      required: true,
-      unique: false,
-    },
-    categories: {
-      type: Array,
-      required: false,
-      unique: false,
-    },
-    userID: {
-      type: String,
-      required: true,
-      unique: false,
-    },
+    title: String,
+    text: String,
+    thumbnail: String,
+    username: String,
+    categories: Array,
+    userID: String,
     media: {
       type: Array,
-      required: false,
-      unique: false,
+      default: null,
     },
     acceptedBy: {
       type: String,
@@ -56,6 +31,9 @@ const PostSchema = new mongoose.Schema(
       type: String,
       default: "author",
     },
+    sourcePostUrl: String,
+    sourceId: String,
+    telegramGroupedId: String,
   },
   { timestamps: true }
 );

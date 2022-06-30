@@ -81,8 +81,16 @@ function Navbar() {
               Hlavní
             </Link>
           </li>
-
           <li className="nav-item">
+            <Link
+              to="/telegram"
+              className="nav-links"
+              onClick={closeMobileMenu}
+            >
+              Telegram UA
+            </Link>
+          </li>
+          {/* <li className="nav-item">
             <Link
               to=""
               className="nav-links-disabled"
@@ -90,7 +98,7 @@ function Navbar() {
             >
               Aukce
             </Link>
-          </li>
+          </li> */}
           <li className="nav-item">
             <Link to="/write" className="nav-links" onClick={closeMobileMenu}>
               Nová zpráva

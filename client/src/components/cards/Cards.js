@@ -3,10 +3,11 @@ import "./Cards.css";
 import CardItem from "./CardItem";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-function Cards({ posts, fetchPosts }) {
+function Cards({ posts, fetchPosts, signText }) {
   return (
     <div className="cards">
-      <h1>Aktuální zprávy z Ukrajiny</h1>
+      {signText !== "" && <h1>{signText}</h1>}
+
       <div className="cards__container">
         <div className="cards__wrapper">
           <InfiniteScroll

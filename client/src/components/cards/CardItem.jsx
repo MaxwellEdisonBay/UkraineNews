@@ -9,12 +9,14 @@ import { sanitize } from "../../utils/htmlParser";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import { Button } from "../main_button/Button";
+import { channelIdToName } from "../../pages/telegram/Telegram";
 
 function CardItem({
   post,
   isPendingMode = false,
   handleReject = null,
   handleApprove = null,
+  mode,
 }) {
   const size = useWindowSize();
   const isMobile = size.width < 960;
@@ -146,7 +148,16 @@ function CardItem({
           className="cards__item__info_container"
           style={{ width: `${size.width * 16 * coeff}px` }}
         >
-          <p>{post.username}</p>
+          {mode === "telegram" ? (
+            <p>
+              {channelIdToName(post.sourceId)}
+              <a href={post.sourcePostUrl} style={{ color: "inherit" }}>
+                {" (original)"}
+              </a>
+            </p>
+          ) : (
+            <p>{post.username}</p>
+          )}
           <p>
             {new Date(post.updatedAt).toLocaleString("en-GB", {
               hour12: false,

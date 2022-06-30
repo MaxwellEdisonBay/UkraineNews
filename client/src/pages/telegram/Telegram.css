@@ -1,0 +1,23 @@
+.telegram-container {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.telegram-channel-container {
+    align-self: center;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+@media screen and (max-width: 960px) {
+    .telegram-channel-container {
+        align-self: center;
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}

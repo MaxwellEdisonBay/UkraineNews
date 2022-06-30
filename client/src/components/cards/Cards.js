@@ -3,7 +3,7 @@ import "./Cards.css";
 import CardItem from "./CardItem";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-function Cards({ posts, fetchPosts, signText }) {
+function Cards({ posts, fetchPosts, signText, mode = "normal" }) {
   return (
     <div className="cards">
       {signText !== "" && <h1>{signText}</h1>}
@@ -37,7 +37,7 @@ function Cards({ posts, fetchPosts, signText }) {
           >
             {posts.map((p, index) => (
               <ul className="cards__items" key={p._id}>
-                <CardItem post={p} index={index} />
+                <CardItem post={p} index={index} mode={mode} />
               </ul>
             ))}
           </InfiniteScroll>

@@ -25,7 +25,7 @@ export const handleMessageMedia = async ({ client, message, postId }) => {
     const groupedId = message.groupedId ? message.groupedId + "" : null;
     const limit = 1048576;
     if (message.media.photo) {
-      console.log(message.media.photo.sizes);
+      // console.log(message.media.photo.sizes);
       const fileName = `telegram-${crypto.randomUUID()}.jpeg`;
       const result = await client.invoke(
         new Api.upload.GetFile({

@@ -3,6 +3,14 @@
   background: #fff;
 }
 
+/* .slider-list {
+  touch-action: initial !important;
+} */
+
+/* .slider-frame {
+  pointer-events: none;
+} */
+
 h1 {
   text-align: center;
 }

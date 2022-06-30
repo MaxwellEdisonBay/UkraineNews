@@ -7,8 +7,11 @@ import Cards from "../../components/cards/Cards";
 import ImageButton from "../../components/image-button/ImageButton";
 
 // 1718881294 - valkaua
+const VALKA_UA_ID = "1718881294";
 // 1197363285 - u_now
+const U_NOW_ID = "1197363285";
 // 1105313000 - uniannet
+const UNIAN_ID = "1105313000";
 
 export const channelIdToName = (id) => {
   switch (id) {
@@ -26,12 +29,34 @@ export const channelIdToName = (id) => {
 export default function Telegram() {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [source, setSource] = useState("1197363285");
+  const [source, setSource] = useState([]);
+  const getQueryArgs = (src) => {
+    return src.length === 0 ? "" : "&selectedChannels=" + src.join("-");
+  };
+
+  const handleChannelClick = async (id) => {
+    let tempSource = [...source];
+    if (source.includes(id)) {
+      tempSource = tempSource.filter((item) => item !== id);
+    } else {
+      tempSource = tempSource.concat(id);
+    }
+    console.log("TEMP SOURCE");
+    console.log(tempSource);
+
+    setSource(tempSource);
+    setCurrentPage(0);
+    setPosts([]);
+    // await fetchPosts();
+  };
 
   const fetchPosts = async () => {
-    const response = await axios.get(
-      `${API_URL}/api/posts/?page=${currentPage}&source=telegram`
-    );
+    const selectedChannelsQueryArg = getQueryArgs(source);
+
+    console.log("fetching " + selectedChannelsQueryArg);
+    const requestQuery = `${API_URL}/api/posts/?page=${currentPage}&source=telegram${selectedChannelsQueryArg}`;
+    console.log(requestQuery);
+    const response = await axios.get(requestQuery);
     let newPosts = [...posts];
     newPosts = newPosts.concat(response.data);
     setPosts(newPosts);
@@ -48,7 +73,7 @@ export default function Telegram() {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [source]);
   const modalData1 = {
     whoOwns: "Rinat Akhmetov",
     whoOwnsUrl: "https://cs.wikipedia.org/wiki/Rinat_Achmetov",
@@ -71,15 +96,15 @@ export default function Telegram() {
             text={"Ukraine Now"}
             modalData={modalData1}
             imagePath={"u_now.jpeg"}
-            active={source === "1197363285"}
-            handleClick={() => setSource("1197363285")}
+            active={source.includes(U_NOW_ID)}
+            handleClick={() => handleChannelClick(U_NOW_ID)}
           />
           <ImageButton
             text={"UNIAN"}
             modalData={modalData2}
             imagePath={"unian.jpg"}
-            active={source === "1105313000"}
-            handleClick={() => setSource("1105313000")}
+            active={source.includes(UNIAN_ID)}
+            handleClick={() => handleChannelClick(UNIAN_ID)}
           />
         </div>
         <Cards posts={posts} fetchPosts={fetchPosts} mode={"telegram"} />

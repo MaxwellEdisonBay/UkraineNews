@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import JoLPlayer from "jol-player";
 import Carousel from "nuka-carousel";
 import "./CardItem.css";

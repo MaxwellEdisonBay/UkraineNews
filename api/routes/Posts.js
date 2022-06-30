@@ -154,12 +154,28 @@ router.get("/", async (req, res) => {
   try {
     let posts;
     if (page) {
-      const filter = source
-        ? {
+      let filter = null;
+      if (source) {
+        const selectedChannels = req.query.selectedChannels;
+        if (selectedChannels) {
+          const selectedArr = selectedChannels.split("-");
+          console.log(selectedChannels);
+          console.log(selectedArr);
+
+          filter = {
             acceptedBy: { $ne: null, $ne: "rejected" },
             source: { $eq: source },
-          }
-        : { acceptedBy: { $ne: null, $ne: "rejected" } };
+            sourceId: { $in: selectedArr },
+          };
+        } else {
+          filter = {
+            acceptedBy: { $ne: null, $ne: "rejected" },
+            source: { $eq: source },
+          };
+        }
+      } else {
+        filter = { acceptedBy: { $ne: null, $ne: "rejected" } };
+      }
 
       posts = await Post.find(filter)
         .skip(page * POST_BATCH_SIZE)

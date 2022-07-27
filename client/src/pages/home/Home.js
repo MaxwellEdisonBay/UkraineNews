@@ -13,6 +13,7 @@ function Home() {
   const { search } = useLocation();
   const postsSection = useRef(null);
 
+  // Test comment
   window.addEventListener("popstate", function (event) {
     //Your code here
     this.window.location.reload();

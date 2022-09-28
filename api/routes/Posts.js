@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
 const POST_BATCH_SIZE = 20;
+const BANNED_TESTING_ID = "1718881294"
 
 //CREATE POST
 router.post("/", async (req, res) => {
@@ -182,10 +183,19 @@ router.get("/", async (req, res) => {
             sourceId: { $in: selectedArr },
           };
         } else {
-          filter = {
-            acceptedBy: { $ne: null, $ne: "rejected" },
-            source: { $eq: source },
-          };
+          if (process.env.NODE_ENV === "production"){
+            filter = {
+              acceptedBy: { $ne: null, $ne: "rejected" },
+              source: { $eq: source },
+              sourceId: {$ne: BANNED_TESTING_ID}
+            };
+          } else {
+            filter = {
+              acceptedBy: { $ne: null, $ne: "rejected" },
+              source: { $eq: source },
+            };
+          }
+          
         }
       } else {
         filter = { acceptedBy: { $ne: null, $ne: "rejected" } };

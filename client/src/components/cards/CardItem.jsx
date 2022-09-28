@@ -24,8 +24,8 @@ function CardItem({
     width: `${size.width * 16 * coeff}px`,
     height: `${size.width * 9 * coeff}px`,
   };
-  const isLong = [...post.text].length > 100;
-  const isOneMedia = post.media.length <= 1;
+  const isLong = post.text!=null ? [...post.text].length > 100 : false;
+  const isOneMedia = post.media!==null ? post.media.length <= 1 : false;
   function isVideo(type) {
     return type === "video";
   }
@@ -44,7 +44,7 @@ function CardItem({
       )}
 
       <div className="cards__item__div">
-        {post.media.length !== 0 && (
+        {post.media!==null && post.media.length !== 0 && (
           <div style={containerStyles}>
             <Carousel
               withoutControls={isOneMedia}

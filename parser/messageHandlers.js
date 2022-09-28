@@ -2,7 +2,7 @@ import crypto from "crypto";
 import * as mime from "mime-types";
 import { uploadFileAsPromise } from "./firebaseHelper.js";
 import { Api } from "telegram";
-import { apiAddPost, apiTranslateText } from "./apiHelper.js";
+import { apiAddPost, apiTranslateText, apiUploadImage } from "./apiHelper.js";
 
 export const handleMessagePost = async ({ message, chat }) => {
   const text = message.message;
@@ -47,13 +47,23 @@ export const handleMessageMedia = async ({ client, message, postId }) => {
         })
       );
       // console.log(result); // prints the result
-      await uploadFileAsPromise(
+
+      // await uploadFileAsPromise(
+      //   result.bytes,
+      //   fileName,
+      //   "image",
+      //   postId,
+      //   groupedId
+      // );
+
+      await apiUploadImage(
         result.bytes,
         fileName,
         "image",
         postId,
         groupedId
-      );
+      )
+
       // fs.writeFileSync(fileName, result.bytes);
       // console.log("File " + fileName + " has been saved");
     } else if (message.media.document) {

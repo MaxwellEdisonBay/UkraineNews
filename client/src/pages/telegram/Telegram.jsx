@@ -12,15 +12,19 @@ const VALKA_UA_ID = "1718881294";
 const U_NOW_ID = "1197363285";
 // 1105313000 - uniannet
 const UNIAN_ID = "1105313000";
+// 1199360700 - truexanewsua
+const TRUCHA_ID = "1199360700"
 
 export const channelIdToName = (id) => {
   switch (id) {
-    case "1197363285":
+    case U_NOW_ID:
       return "Ukraine Now";
-    case "1105313000":
+    case UNIAN_ID:
       return "Unian Agency";
-    case "1718881294":
+    case VALKA_UA_ID:
       return "Válka UA";
+    case TRUCHA_ID:
+      return "Trucha Ukrajina"
     default:
       return "unknown";
   }
@@ -55,14 +59,15 @@ export default function Telegram() {
 
     console.log("fetching " + selectedChannelsQueryArg);
     const requestQuery = `${API_URL}/api/posts/?page=${currentPage}&source=telegram${selectedChannelsQueryArg}`;
-    console.log(requestQuery);
+    // console.log(requestQuery);
     const response = await axios.get(requestQuery);
+    // console.log(response.data)
     let newPosts = [...posts];
     newPosts = newPosts.concat(response.data);
     setPosts(newPosts);
     const newPage = currentPage + 1;
     setCurrentPage(newPage);
-    console.log(posts);
+    // console.log(posts);
     // console.log(response.data);
   };
 
@@ -88,6 +93,13 @@ export default function Telegram() {
     originalUrl: "https://t.me/uniannet",
     subscribers: "775 K",
   };
+  const modalData3 = {
+    whoOwns: "Nezávislý",
+    whoOwnsUrl: null,
+    position: "🇺🇦🇺🇦🇺🇦",
+    originalUrl: "https://t.me/truexanewsua",
+    subscribers: "2.4 M",
+  };
   return (
     <div>
       <div className="telegram-container">
@@ -105,6 +117,13 @@ export default function Telegram() {
             imagePath={"unian.jpg"}
             active={source.includes(UNIAN_ID)}
             handleClick={() => handleChannelClick(UNIAN_ID)}
+          />
+          <ImageButton
+            text={"Trucha"}
+            modalData={modalData3}
+            imagePath={"truha.jpg"}
+            active={source.includes(TRUCHA_ID)}
+            handleClick={() => handleChannelClick(TRUCHA_ID)}
           />
         </div>
         <Cards posts={posts} fetchPosts={fetchPosts} mode={"telegram"} />

@@ -50,11 +50,11 @@ router.post("/bot", async (req, res) => {
         // console.log(data);
         const filter = data.postId
           ? {
-              _id: { $eq: data.postId },
-            }
+            _id: { $eq: data.postId },
+          }
           : {
-              telegramGroupedId: { $eq: data.telegramGroupedId },
-            };
+            telegramGroupedId: { $eq: data.telegramGroupedId },
+          };
         const updatedPost = await Post.findOneAndUpdate(
           filter,
           {
@@ -81,6 +81,16 @@ router.post("/bot", async (req, res) => {
         // console.log("POST ADDED");
         break;
       }
+      case "getMediaToDelete": {
+        query = {
+          createdAt: {
+            $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * data.days)
+          }
+        }
+        const docs = await Post.find(query)
+        res.status(200).json(docs)
+        break
+      }
       default:
         res.status(404).json("Unknown action");
     }
@@ -104,7 +114,7 @@ router.put("/:id", async (req, res) => {
           { new: true }
         );
         res.status(200).json(updatedPost);
-      } catch (err) {}
+      } catch (err) { }
     } else {
       res.status(401).json("You can update your posts only!");
     }
@@ -125,7 +135,7 @@ router.delete("/:id", async (req, res) => {
       try {
         await post.delete();
         res.status(200).json("Post has been deleted");
-      } catch (err) {}
+      } catch (err) { }
     } else {
       res.status(401).json("You can delete your posts only!");
     }
@@ -148,9 +158,13 @@ router.get("/:id", async (req, res) => {
 
 //GET ALL POSTS
 router.get("/", async (req, res) => {
+  // await Post.updateMany({
+  //   $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30)
+  // }, { $set: { media: null } })
   const page = req.query.page;
   const pending = req.query.pending;
   const source = req.query.source;
+  // console.log("GET POSTS")
   try {
     let posts;
     if (page) {
@@ -194,6 +208,7 @@ router.get("/", async (req, res) => {
     }
 
     // console.log(req.user);
+    // console.log(posts)
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
@@ -210,7 +225,7 @@ router.post("/approve/:id", async (req, res) => {
           $set: { acceptedBy: req.user._id, reviewedAt: new Date() },
         });
         res.status(200).json("Post has been approved");
-      } catch (err) {}
+      } catch (err) { }
     } else {
       res.status(401).json("You don't have permission!");
     }
@@ -231,7 +246,7 @@ router.post("/reject/:id", async (req, res) => {
           $set: { acceptedBy: "rejected", reviewedAt: new Date() },
         });
         res.status(200).json("Post has been rejected");
-      } catch (err) {}
+      } catch (err) { }
     } else {
       res.status(401).json("You can update your posts only!");
     }

@@ -10,13 +10,15 @@ import { NewMessage } from "telegram/events/NewMessage.js";
 const stringSession = new StringSession(sessionSave); // fill this later with the value from session.save()
 
 import { onMessageReceive } from "./messageReceiver.js";
+import { deleteOldMedia } from "./firebaseHelper.js";
 
-const ALLOWED_CHANNELS = ["u_now", "valkaua", "uniannet"];
+const ALLOWED_CHANNELS = ["u_now", "valkaua", "uniannet", "truexanewsua"];
 // const ALLOWED_CHANNELS = ["valkaua"];
 
 // 1718881294 - valkaua
 // 1197363285 - u_now
 // 1105313000 - uniannet
+// 1199360700 - truexanewsua
 
 (async () => {
   console.log("Loading interactive example...");
@@ -39,11 +41,19 @@ const ALLOWED_CHANNELS = ["u_now", "valkaua", "uniannet"];
     })
   );
   const chats = chatsResponse.chats;
+  // chats.forEach((ch) => {
+  //   if (ch.title === "Труха⚡️Украина"){
+  //     console.log(ch)
+
+  //   }
+
+  // })
 
   async function eventPrint(event) {
     const message = event.message;
 
     if (!event.isPrivate) {
+      // await deleteOldMedia()
       const channel = message.peerId.channelId;
       const chat = chats.find((chat) => chat.id + "" === channel + "");
       if (chat && ALLOWED_CHANNELS.includes(chat.username)) {

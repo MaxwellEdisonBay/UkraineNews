@@ -1,6 +1,7 @@
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { apiAddFile } from "./apiHelper.js";
+import { ref, uploadBytesResumable, getDownloadURL, getStorage, deleteObject } from "firebase/storage";
+import { apiAddFile, apiGetMediaToDelete } from "./apiHelper.js";
 import storage from "./firebaseConfig.js";
+
 
 export const uploadFileAsPromise = (
   fileBuffer,
@@ -10,8 +11,10 @@ export const uploadFileAsPromise = (
   groupedId
 ) => {
   const storageRef = ref(storage, `/telegram/${filename}`);
-
-  const uploadTask = uploadBytesResumable(storageRef, fileBuffer);
+  var metadata = {
+    cacheControl: 'public,max-age=4000',
+  }
+  const uploadTask = uploadBytesResumable(storageRef, fileBuffer, metadata);
 
   uploadTask.on(
     "state_changed",
@@ -50,3 +53,24 @@ export const uploadFileAsPromise = (
   );
   return uploadTask;
 };
+
+export const deleteOldMedia = async () => {
+  const links = await apiGetMediaToDelete({days: 24})
+  const storage = getStorage();
+  console.log("Deleting old media")
+  // links.forEach((url, index) => {
+    const url = links[0]
+    const fileRef = ref(storage, url)
+    
+    deleteObject(fileRef).then(() => {
+      // File deleted successfully
+      console.log(`Deleted ${index} element`)
+      
+    }).catch((error) => {
+      // console.log(`Error on ${index}`)
+      console.log(error)
+    });
+  // })
+  console.log("Delete finished")
+  
+}
